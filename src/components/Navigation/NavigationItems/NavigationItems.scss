@@ -1,0 +1,9 @@
+.Navigation {
+    &__items {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        flex-flow: column;
+    }
+}
