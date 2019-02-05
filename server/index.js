@@ -9,12 +9,29 @@ app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+const validateEmail = (email) => {
+  const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regEx.test(String(email).toLowerCase());
+}
+
 
 app.post('/api/contact', (req, res) => {
-  const success = false;
+  let success = true;
   const payload = {};
-  console.log(req.body);
+  payload.errors = []; 
 
+  let {email, message} = req.body;
+
+  if(!validateEmail(email)) {
+    payload.errors.push('Email is invalid');
+    success = false;
+  }
+
+  if(message.length < 5) {
+    payload.errors.push('Message needs to be longer then 30 characters!');
+    success = false;
+  }
+  
   // TODO: Do validation and push error messages (if any) to payload.
   // payload.errors = [];
 

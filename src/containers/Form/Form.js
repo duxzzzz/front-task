@@ -18,7 +18,8 @@ class Form extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             message: {
                 elementType: 'textarea',
@@ -28,17 +29,24 @@ class Form extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true
+                    required: true,
+                    minLength: 5,
+                    maxLength: 100
                 },
-                valid: false
+                valid: false,
+                touched: false
             }
         },
-        loading: false
+        loading: false,
+        success: null,
+        error: []
     }
 
     contactHandler = (event) => {
         event.preventDefault();
         this.setState({ loading:true });
+        this.setState({ success: null });
+        this.setState({ error: [] });
         const data= {};
         for (let formElementIdentifier in this.state.contactForm) {
             data[formElementIdentifier] = this.state.contactForm[formElementIdentifier].value;
@@ -46,10 +54,13 @@ class Form extends Component {
 
         axios.post('contact', data)
         .then(response => {
-            this.setState({ loading: false })
-            this.props.history.push('/');
+            this.setState({ loading: false });
+            this.setState({ success: response.data.message});
         })
-        .catch(error => this.setState({ loading: false }));
+        .catch(error => {
+            this.setState({ loading: false });
+            this.setState({error: error.response.data.errors})
+        });
     }
 
     checkValidity(value, rules) {
@@ -81,6 +92,7 @@ class Form extends Component {
 
         updatedFormElement.value = event.target.value;
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true;
         updatedContactForm[inputIdentifier] = updatedFormElement;
         this.setState({ contactForm: updatedContactForm });
     }
@@ -94,6 +106,31 @@ class Form extends Component {
             })
         }
 
+        const errors = this.state.error.map(er => {
+            return <span
+                        style={{
+                                display: 'block',
+                                margin: '0 8px',
+                                padding: '5px',
+                                color: 'red'
+                              }} 
+                        key={er}>{er}
+                    </span>;
+            })
+        
+        const success = (
+            <span 
+                style={{
+                    display: 'block',
+                    margin: '0 8px',
+                    padding: '5px',
+                    color: 'green'
+                }}
+            >
+                {this.state.success}
+            </span>
+        )
+
         let form = (
             <form onSubmit={this.contactHandler}>
                 {formElementsArray.map(formElement => (
@@ -102,9 +139,14 @@ class Form extends Component {
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
                         value={formElement.config.value}
+                        invalid={!formElement.config.valid}
+                        shouldValidate={formElement.config.validation}
+                        touched={formElement.config.touched}
                         changed={(event) => this.inputChangedHandler(event, formElement.id)}
                     />
                 ))}
+                {errors}
+                {success}
                 <Button>SUBMIT</Button>
             </form>
         )
