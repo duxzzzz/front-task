@@ -56,6 +56,16 @@ class Form extends Component {
         .then(response => {
             this.setState({ loading: false });
             this.setState({ success: response.data.message});
+            this.setState({
+                contactForm: {
+                    email: {
+                        value: ''
+                    },
+                    message: {
+                        value:''
+                    }
+                }
+            });
         })
         .catch(error => {
             this.setState({ loading: false });
@@ -157,7 +167,7 @@ class Form extends Component {
 
         return(
             <div className={styles.Form}>
-                <h4>Enter your Contact Data</h4>
+                <h4 className={styles.Form__title}>Enter your Contact Data</h4>
                 {form}
             </div>
         )

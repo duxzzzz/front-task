@@ -1,11 +1,11 @@
 import React from 'react';
 import Aux from '../../hoc/Aux';
-import Toolbar from '../Navigation/Toolbar/Toolbar';
+import Navigation from '../Navigation/Navigation';
 import Footer from '../Footer/Footer';
 
 const layout = (props) => (
     <Aux>
-        <Toolbar/>
+        <Navigation/>
         <main>
             {props.children}
         </main>

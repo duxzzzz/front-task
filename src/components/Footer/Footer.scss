@@ -1,11 +1,13 @@
 .Footer {
     width: 100%;
-    background-color: aqua;
-    text-align: center;
+    background-color: #737984;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &__text {
-        font-size: 50px;
-        padding: 20px 0;
+        font-size: 20px;
         color: #000;
     }
 }

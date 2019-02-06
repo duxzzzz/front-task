@@ -14,7 +14,6 @@ const validateEmail = (email) => {
   return regEx.test(String(email).toLowerCase());
 }
 
-
 app.post('/api/contact', (req, res) => {
   let success = true;
   const payload = {};
@@ -27,14 +26,10 @@ app.post('/api/contact', (req, res) => {
     success = false;
   }
 
-  if(message.length < 5) {
+  if(message.length < 30) {
     payload.errors.push('Message needs to be longer then 30 characters!');
     success = false;
   }
-  
-  // TODO: Do validation and push error messages (if any) to payload.
-  // payload.errors = [];
-
 
   if(success) {
     res.status(200);
