@@ -39,6 +39,7 @@ class Form extends Component {
         },
         loading: false,
         success: null,
+        networkError: null,
         error: []
     }
 
@@ -69,7 +70,10 @@ class Form extends Component {
         })
         .catch(error => {
             this.setState({ loading: false });
-            this.setState({error: error.response.data.errors})
+            if(error) {
+                this.setState({networkError: 'Network Error. Please try again later!'});
+            }
+            this.setState({error: error.response.data.errors});
         });
     }
 
@@ -155,6 +159,7 @@ class Form extends Component {
                         changed={(event) => this.inputChangedHandler(event, formElement.id)}
                     />
                 ))}
+                {this.state.networkError}
                 {errors}
                 {success}
                 <Button>SUBMIT</Button>

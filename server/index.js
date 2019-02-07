@@ -22,12 +22,12 @@ app.post('/api/contact', (req, res) => {
   let {email, message} = req.body;
 
   if(!validateEmail(email)) {
-    payload.errors.push('Email is invalid');
+    payload.errors.push('Email is invalid.');
     success = false;
   }
 
   if(message.length < 30) {
-    payload.errors.push('Message needs to be longer then 30 characters!');
+    payload.errors.push('Message needs to be longer than 30 characters!');
     success = false;
   }
 
