@@ -1,16 +1,16 @@
 import React from 'react';
-import Aux from '../../hoc/Aux';
+import Auxillary from '../../hoc/Auxillary';
 import Navigation from '../Navigation/Navigation';
 import Footer from '../Footer/Footer';
 
 const layout = (props) => (
-    <Aux>
+    <Auxillary>
         <Navigation/>
         <main>
             {props.children}
         </main>
         <Footer text="This is Footer"/>
-    </Aux>
+    </Auxillary>
 )
 
 export default layout;
